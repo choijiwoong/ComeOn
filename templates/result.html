@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h2>검색 결과 페이지</h2>
+    <div id="result">검색 중...</div>
+
+    <script>
+      const query = new URLSearchParams(window.location.search).get('query');
+      fetch(`/api/search?query=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('result').innerText = data.result;
+        });
+    </script>
+  </body>
+</html>
+
