@@ -26,7 +26,11 @@ exchange_rates = get_exchange_rates()
 # 🎯 가격 문자열을 원화 float으로 변환
 def extract_price_number(price_str, currency=None):
     try:
-        price_str = price_str.replace(",", "").replace("원", "").replace("엔", "").replace("$", "").replace("约", "")
+        # 통화 기호 및 불필요 문자 제거
+        price_str = price_str.replace("약", "").replace("원", "").replace("엔", "").replace("￥", "")
+        price_str = price_str.replace("USD", "").replace("US", "").replace("$", "").replace("₩", "")
+        price_str = price_str.replace(",", ".")  # ✅ 유럽식 쉼표 → 점 변환
+
         numbers = re.findall(r"\d+(?:\.\d+)?", price_str)
         if not numbers:
             return float("inf")
@@ -38,8 +42,10 @@ def extract_price_number(price_str, currency=None):
             return raw_value * exchange_rates["CNY"]
         else:
             return raw_value
-    except:
+    except Exception as e:
+        print("❌ 가격 파싱 오류:", e)
         return float("inf")
+
 
 # ✅ 알리익스프레스 검색 함수
 def search_aliexpress_static(keyword, max_items=10):
