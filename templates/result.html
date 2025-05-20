@@ -63,8 +63,8 @@
 <body>
 
 <h2>🔍 검색 결과</h2>
-<p class="loading">검색 중입니다... 잠시만 기다려주세요.</p>
-<div class="results" id="results"></div>
+<p class="loading">검색 중입니다...</p>
+<div id="results"></div>
 
 <script>
   const query = new URLSearchParams(window.location.search).get("query");
@@ -75,33 +75,49 @@
       document.querySelector(".loading").style.display = "none";
       const container = document.getElementById("results");
 
-      if (data.length === 0) {
+      if (!data || Object.keys(data).length === 0) {
         container.innerHTML = "<p>결과가 없습니다 😢</p>";
         return;
       }
 
-      data.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
+      for (const [source, items] of Object.entries(data)) {
+        const section = document.createElement("section");
+        const title = document.createElement("h3");
+        title.innerText = `📦 ${source} (${items.length}개)`;
+        section.appendChild(title);
 
-        const imgUrl = item.image.startsWith("data:image") ? "" : item.image;
+        const grid = document.createElement("div");
+        grid.className = "results";
+        
+        items.forEach(item => {
+          const card = document.createElement("div");
+          card.className = "card";
 
-        card.innerHTML = `
-          <img src="${imgUrl || 'https://via.placeholder.com/230x150?text=No+Image'}" alt="${item.title}">
-          <div class="card-title">${item.title}</div>
-          <div class="card-price">${item.price}</div>
-          <div class="card-source">출처: ${item.source}</div>
-          <a href="${item.link}" target="_blank">🔗 상품 보기</a>
-        `;
+          const imgUrl = item.image || "https://via.placeholder.com/230x150?text=No+Image";
 
-        container.appendChild(card);
-      });
+	card.innerHTML = `
+  		<img src="${imgUrl}" alt="${item.title}"
+       			onerror="this.onerror=null;this.src='https://via.placeholder.com/230x150?text=No+Image';">
+  		<div class="card-title">${item.title}</div>
+  		<div class="card-price">${item.price}</div>
+  		<div class="card-source">출처: ${item.source}</div>
+  		<a href="${item.link}" target="_blank">🔗 상품 보기</a>
+`	;
+
+
+          grid.appendChild(card);
+        });
+
+        section.appendChild(grid);
+        container.appendChild(section);
+      }
     })
     .catch(err => {
       console.error("❌ 오류 발생:", err);
       document.querySelector(".loading").innerText = "오류가 발생했습니다. 나중에 다시 시도해주세요.";
     });
 </script>
+
 
 </body>
 </html>

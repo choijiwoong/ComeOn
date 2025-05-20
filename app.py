@@ -168,16 +168,19 @@ def safe_json(items):
 def search_api():
     query = request.args.get("query")
     if not query:
-        return jsonify([])
+        return jsonify({})
 
     ali_data = search_aliexpress_static(query)
     taobao_url = get_taobao_category_url(query)
     taobao_data = crawl_taobao_category(taobao_url) if taobao_url else []
 
-    combined = ali_data + taobao_data
-    combined_sorted = sorted([x for x in combined if x["price_value"] is not None], key=lambda x: x["price_value"])
+    grouped_result = {
+        "AliExpress": safe_json([item for item in ali_data if item["price_value"] is not None]),
+        "Taobao": safe_json([item for item in taobao_data if item["price_value"] is not None])
+    }
 
-    return jsonify(safe_json(combined_sorted))
+    return jsonify(grouped_result)
+
 
 # 기본 페이지
 @app.route("/")
