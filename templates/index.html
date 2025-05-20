@@ -1,11 +1,86 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h2>검색해보세요</h2>
-    <form action="/result">
-      <input type="text" name="query" placeholder="검색어 입력">
-      <button type="submit">검색</button>
-    </form>
-  </body>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>ComeOn 검색</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 0.2em;
+      color: #343a40;
+    }
+
+    p {
+      color: #6c757d;
+      margin-bottom: 2em;
+    }
+
+    form {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      padding: 10px 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 300px;
+      transition: 0.2s ease;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 13px;
+      color: #adb5bd;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔍 ComeOn 검색</h1>
+  <p>찾고 싶은 상품을 입력해보세요</p>
+
+  <form action="/result">
+    <input type="text" name="query" placeholder="예: 아이폰 케이스" required>
+    <button type="submit">검색</button>
+  </form>
+
+  <footer>ⓒ 2025 ComeOn Search by team GRIT</footer>
+
+</body>
 </html>
 
